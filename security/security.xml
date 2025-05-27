@@ -16,7 +16,8 @@
     <record id="team_leader_record_rule" model="ir.rule">
         <field name="name">Team Leader</field>
         <field name="model_id" ref="task_one_hr_benefits.model_hr_employee_benefits"/>
-        <field name="domain_force">[('employee_id.parent_id.user_id.id', '=', user.id)]</field>
+        <field name="domain_force">['|', ('employee_id.parent_id.user_id.id', '=', user.id),
+            ('employee_id.user_id.id', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('task_one_hr_benefits.team_leader_group'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_create" eval="True"/>

@@ -35,10 +35,17 @@
             </header>
 
             <sheet>
-                <div class="oe_title">
+                <div class="oe_title" groups="task_one_hr_benefits.team_leader_group">
                     <label for="employee_id"/>
                         <h1>
-                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="employee_id"
+                               domain="['|', ('user_id', '=', uid), ('parent_id.user_id', '=', uid)]"/>
+                        </h1>
+                </div>
+                <div class="oe_title"  groups="task_one_hr_benefits.hr_managers_group">
+                    <label for="employee_id"/>
+                        <h1>
+                            <field name="employee_id"/>
                         </h1>
                 </div>
 
@@ -46,11 +53,10 @@
                     <field name="benefit_type_id" readonly="state != 'draft'"/>
                     <field name="employee_department"/>
                     <field name="employee_manager"/>
-                    <field name="employee_manager"/>
                     <field name="employee_job"/>
                     <field name="value" readonly="state != 'draft'"/>
                     <field name="total_benefit"/>
-                    <field name="benefit_date"/>
+                    <field name="benefit_date" readonly="state != 'draft'"/>
                     <field name="month_benefit_total"/>
                 </group>
             </sheet>

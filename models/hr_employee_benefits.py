@@ -38,6 +38,7 @@ class HrEmployeeBenefits(models.Model):
         for rec in self:
             rec.state = 'draft'
             rec._compute_total_benefit()
+            rec._compute_month_benefit_total()
 
     def action_confirmed(self):
         for rec in self:
@@ -47,6 +48,7 @@ class HrEmployeeBenefits(models.Model):
         for rec in self:
             rec.state = 'refused'
             rec._compute_total_benefit()
+            rec._compute_month_benefit_total()
 
     def unlink(self):
         employees = self.mapped('employee_id')
@@ -78,20 +80,31 @@ class HrEmployeeBenefits(models.Model):
         global total
         employees = self.mapped('employee_id')
         for employee in employees:
+            # Step 1: Get all benefits for this employee (any state)
+            all_benefits = self.env['hr.employee.benefits'].search([
+                ('employee_id', '=', employee.id),
+                ('benefit_date', '!=', False),
+            ])
 
+            # Step 2: Build a set of (year, month) for all benefits
+            all_months = set((b.benefit_date.year, b.benefit_date.month) for b in all_benefits)
+
+            # Step 3: Build confirmed benefits grouped by (year, month)
             confirmed_benefits = self.env['hr.employee.benefits'].search([
                 ('employee_id', '=', employee.id),
                 ('state', '=', 'confirmed'),
             ])
-
             monthly_groups = {}
             for b in confirmed_benefits:
                 key = (b.benefit_date.year, b.benefit_date.month)
                 monthly_groups.setdefault(key, []).append(b)
 
-            for (year, month), benefits_in_month in monthly_groups.items():
-                total = sum(b.value for b in benefits_in_month)
+            # Step 4: For each month, apply totals
+            for (year, month) in all_months:
+                confirmed_in_month = monthly_groups.get((year, month), [])
+                total = sum(b.value for b in confirmed_in_month) if confirmed_in_month else 0
 
+                # Get all benefits (draft, refused, confirmed) in that month
                 all_benefits_this_month = self.env['hr.employee.benefits'].search([
                     ('employee_id', '=', employee.id),
                     ('benefit_date', '>=', date(year, month, 1)),
