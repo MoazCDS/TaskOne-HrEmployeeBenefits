@@ -1,0 +1,18 @@
+<odoo>
+    <menuitem
+            id="hr_employee_root_menu"
+            name="Employee Benefits"
+    />
+
+    <menuitem
+            id="employee_menu"
+            name="HR Employees"
+            parent="hr_employee_root_menu"
+    />
+
+    <menuitem
+            id="configurations"
+            name="Configurations"
+            parent="hr_employee_root_menu"
+    />
+</odoo>

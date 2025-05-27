@@ -1,0 +1,46 @@
+<odoo>
+    <record id="benefit_types_view_tree" model="ir.ui.view">
+        <field name="name">Benefits Tree</field>
+        <field name="model">benefit.type</field>
+        <field name="arch" type="xml">
+        <tree multi_edit="1">
+            <field name="name"/>
+            <field name="code"/>
+        </tree>
+        </field>
+    </record>
+
+
+    <record id="benefit_types_view_form" model="ir.ui.view">
+        <field name="name">Benefits Form</field>
+        <field name="model">benefit.type</field>
+        <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <div class="oe_title">
+                    <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                </div>
+                <group><field name="code"/></group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+
+
+    <record id="benefits_action" model="ir.actions.act_window">
+        <field name="name">Benefit Types</field>
+        <field name="res_model">benefit.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem
+            id="benefit_types_menu_item"
+            name="Benefit Types"
+            parent="configurations"
+            action="benefits_action"
+    />
+</odoo>
