@@ -4,15 +4,16 @@
             name="Employee Benefits"
     />
 
-    <menuitem
-            id="employee_menu"
-            name="HR Employees"
-            parent="hr_employee_root_menu"
-    />
+<!--    <menuitem-->
+<!--            id="employee_menu"-->
+<!--            name="HR Employees"-->
+<!--            parent="hr_employee_root_menu"-->
+<!--    />-->
 
     <menuitem
             id="configurations"
             name="Configurations"
             parent="hr_employee_root_menu"
+            groups="task_one_hr_benefits.hr_managers_group"
     />
 </odoo>

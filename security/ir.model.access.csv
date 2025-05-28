@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_benefits_hr_managers,hr.employee.benefits.hr_managers,model_hr_employee_benefits,task_one_hr_benefits.hr_managers_group,1,1,1,1
-access_hr_benefits_team_leader,hr.employee.benefits.team_leader,model_hr_employee_benefits,task_one_hr_benefits.team_leader_group,1,0,1,1
-access_hr_benefits_user,hr.employee.benefits.user,model_hr_employee_benefits,task_one_hr_benefits.user_group,1,0,0,0
+access_hr_benefits_type_team_leader,hr.employee.benefits.team_leader,model_hr_employee_benefits,task_one_hr_benefits.team_leader_group,1,1,1,1
+access_hr_benefits_type_user_group,hr.employee.benefits.user_group,model_hr_employee_benefits,task_one_hr_benefits.user_group,1,0,0,0
 access_benefit_type_hr_managers,access_benefit_type_hr_managers,model_benefit_type,hr_managers_group,1,1,1,1
+access_benefit_type_team_leader,access_benefit_type_team_leader,model_benefit_type,team_leader_group,1,0,0,0

@@ -3,37 +3,74 @@
     <field name="name">Hr Benefits</field>
     </record>
 
-    <record id="hr_managers_group" model="res.groups">
-    <field name="name">Hr Manager</field>
-        <field name="category_id" ref="task_one_hr_benefits.hr_category"/>
-    </record>
 
-    <record id="team_leader_group" model="res.groups">
-    <field name="name">Team Leader</field>
-        <field name="category_id" ref="task_one_hr_benefits.hr_category"/>
-    </record>
-
-    <record id="team_leader_record_rule" model="ir.rule">
-        <field name="name">Team Leader</field>
-        <field name="model_id" ref="task_one_hr_benefits.model_hr_employee_benefits"/>
-        <field name="domain_force">['|', ('employee_id.parent_id.user_id.id', '=', user.id),
-            ('employee_id.user_id.id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('task_one_hr_benefits.team_leader_group'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
 
     <record id="user_group" model="res.groups">
     <field name="name">Hr User</field>
         <field name="category_id" ref="task_one_hr_benefits.hr_category"/>
     </record>
 
-    <record id="user_record_rule" model="ir.rule">
-        <field name="name">Records: Own Records Only</field>
+
+
+
+        <record id="team_leader_group" model="res.groups">
+    <field name="name">Team Leader</field>
+        <field name="category_id" ref="task_one_hr_benefits.hr_category"/>
+            <field name="implied_ids" eval="[(4, ref('task_one_hr_benefits.user_group'))]"/>
+    </record>
+
+    <record id="team_leader_own_employees" model="ir.rule">
+<!-- Since the Hr User ain't anyone manager so it's safe to put him with the team_leader in the same rule -->
+        <field name="name">Team Leader: See Own Employees And Records</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="domain_force">['|',
+            ('user_id.id', '=', user.id),
+            ('parent_id.user_id.id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('task_one_hr_benefits.team_leader_group')),
+           (4, ref('task_one_hr_benefits.user_group'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="team_leader_employees_benefits" model="ir.rule">
+        <field name="name">Team Leader: See Own Employee Benefits Only</field>
         <field name="model_id" ref="task_one_hr_benefits.model_hr_employee_benefits"/>
-        <field name="domain_force">[('employee_id.user_id.id', '=', user.id)]</field>
-        <field name="groups" eval="[(4, ref('task_one_hr_benefits.user_group'))]"/>
+        <field name="domain_force">['|',
+             ('employee_id.parent_id.user_id.id', '=', user.id),
+             ('employee_id.user_id.id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('task_one_hr_benefits.team_leader_group')),
+         (4, ref('task_one_hr_benefits.user_group'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+
+
+
+    <record id="hr_managers_group" model="res.groups">
+    <field name="name">Hr Manager</field>
+        <field name="category_id" ref="task_one_hr_benefits.hr_category"/>
+        <field name="implied_ids" eval="[(4, ref('task_one_hr_benefits.team_leader_group'))]"/>
+    </record>
+
+    <record id="hr_manager_all_employees" model="ir.rule">
+        <field name="name">Hr Manager: See All Employees</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="groups" eval="[(4, ref('task_one_hr_benefits.hr_managers_group'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="hr_manager_benefits" model="ir.rule">
+        <field name="name">Hr Manager: See All Benefits</field>
+        <field name="model_id" ref="task_one_hr_benefits.model_hr_employee_benefits"/>
+        <field name="groups" eval="[(4, ref('task_one_hr_benefits.hr_managers_group'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
