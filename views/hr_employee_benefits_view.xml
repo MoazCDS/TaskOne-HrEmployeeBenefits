@@ -25,11 +25,14 @@
 
             <header padding="5px">
                 <button name="action_draft" string="Set To Draft" type="object" class="btn-primary"
-                        invisible="state == 'draft'"/>
+                        invisible="state == 'draft'"
+                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
                 <button name="action_confirmed" string="Confirm" type="object" class="btn-primary"
-                        invisible="state == 'confirmed'"/>
+                        invisible="state == 'confirmed'"
+                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
                 <button name="action_refused" string="Refuse" type="object" class="btn-primary"
-                        invisible="state == 'refused'"/>
+                        invisible="state == 'refused'"
+                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
                 <field name="state" widget="statusbar" readonly="state == 'confirmed'"/>
             </header>
 
