@@ -13,7 +13,7 @@ class XlsxBenefitReport(http.Controller):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Benefits')
 
-        headers = ['Employee Name', 'Employee Department', 'Employee Job', 'Total Benefit', 'Benefit Name']
+        headers = ['Employee Name', 'Department ID', 'Job ID', 'Total Benefit', 'Benefit Name']
         col_width = [len(header) for header in headers ]
         header_format = workbook.add_format({"bold": True, 'bg_color': '#D3D3D3', 'border': 1, 'align': 'center'})
         left_align_format = workbook.add_format({'align': 'left'})

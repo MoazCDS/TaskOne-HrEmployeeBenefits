@@ -7,11 +7,10 @@
             <header>
                 <button name="benefit_xlsx_report" type="object" string="Print Excel Report" class="btn-primary"/>
             </header>
-            <field name="employee_id" width="20%"/>
-            <field name="benefit_type_id" width="20%"/>
-            <field name="value" width="20%"/>
-            <field name="month_benefit_total" width="20%"/>
-            <field name="total_benefit" width="20%"/>
+            <field name="employee_id" width="25%"/>
+            <field name="benefit_type_id" width="25%"/>
+            <field name="amount" width="25%"/>
+            <field name="total_benefit" width="25%"/>
         </tree>
         </field>
     </record>
@@ -23,37 +22,22 @@
         <field name="arch" type="xml">
         <form archivable="true">
 
-            <header padding="5px">
-                <button name="action_draft" string="Set To Draft" type="object" class="btn-primary"
-                        invisible="state == 'draft'"
-                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
-                <button name="action_confirmed" string="Confirm" type="object" class="btn-primary"
-                        invisible="state == 'confirmed'"
-                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
-                <button name="action_refused" string="Refuse" type="object" class="btn-primary"
-                        invisible="state == 'refused'"
-                        groups="task_one_hr_benefits.hr_managers_group,task_one_hr_benefits.team_leader_group"/>
-                <field name="state" widget="statusbar" readonly="state == 'confirmed'"/>
-            </header>
-
             <sheet>
-                <widget name="web_ribbon" title="Refused" bg_color="text-bg-danger" invisible="state != 'refused'"/>
                 <div class="oe_title">
                     <label for="employee_id"/>
                         <h1>
-                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="employee_id"/>
                         </h1>
                 </div>
 
                 <group>
-                    <field name="benefit_type_id" readonly="state != 'draft'"/>
-                    <field name="employee_department"/>
+                    <field name="benefit_type_id"/>
+                    <field name="department_id"/>
                     <field name="employee_manager"/>
-                    <field name="employee_job"/>
-                    <field name="value" readonly="state != 'draft'"/>
+                    <field name="job_id"/>
+                    <field name="amount"/>
                     <field name="total_benefit"/>
-                    <field name="benefit_date" readonly="state != 'draft'"/>
-                    <field name="month_benefit_total"/>
+                    <field name="benefit_date"/>
                 </group>
             </sheet>
         </form>
@@ -69,7 +53,7 @@
                 <field name="employee_id" type="col"/>
                 <field name="benefit_type_id" type="row"/>
                 <field name="total_benefit" type="measure"/>
-                <field name="value" readonly=""/>
+                <field name="amount" readonly=""/>
                 <field name="benefit_name" invisible="1"/>
             </pivot>
         </field>
@@ -84,13 +68,8 @@
                 <field name="benefit_name"/>
                 <field name="employee_name"/>
 
-                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
-                <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
-                <filter name="refused" string="Refused" domain="[('state','=','refused')]"/>
-
                 <filter name="group_employee" string="Employee" context="{'group_by': 'employee_name'}"/>
                 <filter name="group_manager" string="Manager" context="{'group_by': 'employee_manager'}"/>
-                <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
@@ -102,44 +81,6 @@
         <field name="view_mode">tree,form,pivot</field>
     </record>
 
-    <record id="benefit_draft" model="ir.actions.server">
-        <field name="name">Set To Draft</field>
-        <field name="model_id" ref="model_hr_employee_benefits"/>
-        <field name="binding_model_id" ref="model_hr_employee_benefits"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = records.action_draft()
-        </field>
-        <field name="groups_id"
-        eval="[(6, 0, [ref('task_one_hr_benefits.hr_managers_group'), ref('task_one_hr_benefits.team_leader_group')])]"/>
-    </record>
-
-
-    <record id="benefit_confirmed" model="ir.actions.server">
-        <field name="name">Confirm</field>
-        <field name="model_id" ref="model_hr_employee_benefits"/>
-        <field name="binding_model_id" ref="model_hr_employee_benefits"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = records.action_confirmed()
-        </field>
-        <field name="groups_id"
-        eval="[(6, 0, [ref('task_one_hr_benefits.hr_managers_group'), ref('task_one_hr_benefits.team_leader_group')])]"/>
-    </record>
-
-
-    <record id="benefit_refused" model="ir.actions.server">
-        <field name="name">Refused</field>
-        <field name="model_id" ref="model_hr_employee_benefits"/>
-        <field name="binding_model_id" ref="model_hr_employee_benefits"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = records.action_refused()
-        </field>
-        <field name="groups_id"
-        eval="[(6, 0, [ref('task_one_hr_benefits.hr_managers_group'), ref('task_one_hr_benefits.team_leader_group')])]"/>
-    </record>
-
 
     <menuitem
             id="employee_menu_item"
@@ -147,6 +88,7 @@
             parent="hr_employee_root_menu"
             action="employee_action"
             groups="task_one_hr_benefits.user_group"
+            sequence="1"
     />
 </odoo>
 

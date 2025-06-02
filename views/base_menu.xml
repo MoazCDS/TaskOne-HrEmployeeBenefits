@@ -15,5 +15,6 @@
             name="Configurations"
             parent="hr_employee_root_menu"
             groups="task_one_hr_benefits.hr_managers_group"
+            sequence="2"
     />
 </odoo>

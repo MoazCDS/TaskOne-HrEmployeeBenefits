@@ -1,5 +1,6 @@
 {
     'name' : "Hr Benefits",
+    'description': "HR Benefits App",
     'author' : "Moaz Elbahr",
     'category': '',
     'version': '17.0.0.1.0',
